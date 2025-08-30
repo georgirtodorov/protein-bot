@@ -5,17 +5,11 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
 
 	_ "github.com/lib/pq"
 )
 
-func Connect() (*sql.DB, error) {
-	host := os.Getenv("DB_HOST")
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
-	name := os.Getenv("DB_NAME")
-
+func Connect(host string, user string, password string, name string) (*sql.DB, error) {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable",
 		host, user, password, name)
 

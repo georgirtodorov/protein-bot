@@ -2,22 +2,27 @@ package main
 
 import (
 	"log"
+	"os"
 
-	"github.com/georgirtodorov/protein-bot/internal/app"
 	"github.com/georgirtodorov/protein-bot/internal/db"
+	"github.com/georgirtodorov/protein-bot/internal/handlers"
 	"github.com/georgirtodorov/protein-bot/internal/server"
 )
 
 func main() {
-	d, err := db.Connect()
+	host := os.Getenv("DB_HOST")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	name := os.Getenv("DB_NAME")
+	db, err := db.Connect(host, user, password, name)
 	if err != nil {
 		log.Fatalf("Database connection failed: %v", err)
 	}
-	defer d.Close() // close DB when main exits
+	defer db.Close() // close DB when main exits
 
-	app := &app.App{DB: d} // pass DB to App
+	// Register all routes with DB
+	handlers.Register(db)
 
-	app.Routes() // register routes
-
-	server.Start() // start the server
+	port := os.Getenv("PORT")
+	server.Serve(port) // start the server
 }

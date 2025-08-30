@@ -4,11 +4,9 @@ package server
 import (
 	"log"
 	"net/http"
-	"os"
 )
 
-func Start() {
-	port := os.Getenv("PORT")
+func Serve(port string) {
 	if port == "" {
 		log.Fatalf("server failed to start, PORT environment variable not set")
 	}
