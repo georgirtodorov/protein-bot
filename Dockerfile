@@ -3,17 +3,18 @@
 FROM golang:1.25.0-alpine AS build
 
 # Set working directory to module root
-WORKDIR /app/cmd
+WORKDIR /app
 
 # Copy module files and download dependencies
-COPY cmd/go.mod cmd/go.sum ./
+COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy the main.go file
-COPY cmd/main.go .
+# Copy the main.go file and other source file dependencies
+COPY cmd ./cmd/main.go
+COPY internal ./internal
 
 # Build the binary directly from main.go
-RUN go build -o /app/protein-bot main.go
+RUN go build -o /app/protein-bot ./cmd/main.go
 
 # ---- Final image ----
 FROM scratch
