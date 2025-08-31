@@ -5,11 +5,13 @@ import (
 	"os"
 
 	"github.com/georgirtodorov/protein-bot/internal/db"
-	"github.com/georgirtodorov/protein-bot/internal/handlers"
+	"github.com/georgirtodorov/protein-bot/internal/routes"
 	"github.com/georgirtodorov/protein-bot/internal/server"
 )
 
 func main() {
+
+	// Connect to the database
 	host := os.Getenv("DB_HOST")
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
@@ -21,8 +23,9 @@ func main() {
 	defer db.Close() // close DB when main exits
 
 	// Register all routes with DB
-	handlers.Register(db)
+	routes.Register(db)
 
+	// Start the server
 	port := os.Getenv("PORT")
-	server.Serve(port) // start the server
+	server.Serve(port)
 }
