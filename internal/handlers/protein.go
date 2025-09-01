@@ -30,18 +30,37 @@ func Add(w http.ResponseWriter, r *http.Request, d *sql.DB) {
 		return
 	}
 
-	msg := fmt.Sprintf("Protein added: %d grams", amount)
-	w.Write([]byte(msg))
-}
-
-// Total handles the /total endpoint.
-func Total(w http.ResponseWriter, r *http.Request, d *sql.DB) {
 	total, err := db.GetTotalForToday(d)
 	if err != nil {
 		http.Error(w, "Failed to fetch total", http.StatusInternalServerError)
 		return
 	}
-	w.Write([]byte(fmt.Sprintf("Total protein today: %d grams", total)))
+
+	goal, err := db.GetProteinGoal(d)
+	if err != nil {
+		http.Error(w, "Failed to fetch goal", http.StatusInternalServerError)
+		return
+	}
+
+	msg := fmt.Sprintf("Protein added: %d gr\nTotal: %d\nGoal: %d\nRemaining: %d",
+		amount, total, goal, goal-total)
+	w.Write([]byte(msg))
+}
+
+func Status(w http.ResponseWriter, r *http.Request, d *sql.DB) {
+	total, err := db.GetTotalForToday(d)
+	if err != nil {
+		http.Error(w, "Failed to fetch total", http.StatusInternalServerError)
+		return
+	}
+
+	goal, err := db.GetProteinGoal(d)
+	if err != nil {
+		http.Error(w, "Failed to fetch total", http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprintf(w, "Total protein today: %d grams \n Goal: %d \n Remaining %d", total, goal, goal-total)
 }
 
 // History handles the /history endpoint.
