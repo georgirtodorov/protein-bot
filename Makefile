@@ -19,5 +19,6 @@ build-nc:
 
 migrate-up:
 	@echo "Current directory: $(PWD)"
-	docker run --rm -v $(PWD)/migrations:/app --network protein-bot_default migrate/migrate \
+	docker run --rm $(if $(DOCKER_NETWORK),--network $(DOCKER_NETWORK)) \
+		-v $(PWD)/migrations:/app --network $(PROJECT_NETWORK) migrate/migrate \
 		-path=/app -database "postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=disable" up
