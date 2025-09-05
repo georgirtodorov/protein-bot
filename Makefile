@@ -21,4 +21,4 @@ migrate-up:
 	@echo "Current directory: $(PWD)"
 	docker run --rm $(if $(DOCKER_NETWORK),--network $(DOCKER_NETWORK)) \
 		-v $(PWD)/migrations:/app migrate/migrate \
-		-path=/app -database "postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=disable" up
+		-path=/app -database "postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=require" up
