@@ -1,6 +1,6 @@
-# Load environment variables from .env
-include .env
-export $(shell sed 's/=.*//' .env)
+# Load local environment variables if .env exists
+-include .env
+export $(shell sed 's/=.*//' .env 2>/dev/null || true)
 
 up:
 	docker-compose up
