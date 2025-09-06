@@ -6,6 +6,7 @@ on:
 
 jobs:
   image: 
+    permissions: write-all     # <- needed to push to GHCR
     runs-on: ubuntu-latest
     environment: production
     steps:
