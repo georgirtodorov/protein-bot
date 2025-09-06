@@ -9,6 +9,8 @@ up-d:
 	docker-compose up -d
 
 down:
+	@echo "Stopping dev environment"
+	docker stop protein-bot-dev || true
 	docker-compose down
 
 build:
@@ -16,6 +18,23 @@ build:
 
 build-nc:
 	docker-compose build --no-cache
+
+dev:
+	@echo "Running locally with Go in Docker"
+	docker-compose up -d db pgadmin
+	docker run --rm -it \
+		-v $(PWD):/app \
+		-w /app \
+		--network protein-bot_default \
+		--name protein-bot-dev \
+		-e DB_USER=root \
+		-e DB_PASSWORD=toor \
+		-e DB_HOST=db \
+		-e DB_PORT=5432 \
+		-e DB_NAME=protein_bot \
+		-e PORT=8080 \
+		-p 8080:8080 \
+		golang:1.25-alpine go run ./cmd/main.go
 
 migrate-up:
 	@echo "Current directory: $(PWD)"
