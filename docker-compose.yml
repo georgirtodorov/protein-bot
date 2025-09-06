@@ -17,7 +17,7 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
     ports:
-      - "8080:8080" # Map host port 8080 to container port 8080
+      - "${APP_PORT}:${APP_PORT}" # Map host port 8080 to container port 8080
   db: # Define the database service
     image: postgres:16 # Use the official PostgreSQL 16 image
     container_name: protein-bot-db # Set a custom container name for the database

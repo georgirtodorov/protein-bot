@@ -22,18 +22,18 @@ build-nc:
 dev:
 	@echo "Running locally with Go in Docker"
 	docker-compose up -d db pgadmin
-	docker run --rm -it \
+	docker run --rm -d\
 		-v $(PWD):/app \
 		-w /app \
-		--network protein-bot_default \
+		--network $(DOCKER_NETWORK) \
 		--name protein-bot-dev \
-		-e DB_USER=root \
-		-e DB_PASSWORD=toor \
-		-e DB_HOST=db \
-		-e DB_PORT=5432 \
-		-e DB_NAME=protein_bot \
-		-e PORT=8080 \
-		-p 8080:8080 \
+		-e DB_USER=$(DB_USER) \
+		-e DB_PASSWORD=$(DB_PASSWORD) \
+		-e DB_HOST=$(DB_HOST) \
+		-e DB_PORT=$(DB_PORT) \
+		-e DB_NAME=$(DB_NAME) \
+		-e PORT=$(APP_PORT) \
+		-p $(APP_PORT):$(APP_PORT) \
 		golang:1.25-alpine go run ./cmd/main.go
 
 migrate-up:
