@@ -21,4 +21,6 @@ FROM scratch
 
 COPY --from=build /app/protein-bot /protein-bot
 
+EXPOSE 8080
+
 CMD ["/protein-bot"]
