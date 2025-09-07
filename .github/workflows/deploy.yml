@@ -83,7 +83,8 @@ jobs:
         run: |
           aws lambda update-function-configuration \
             --function-name ${{ vars.LAMBDA_FUNCTION_NAME }} \
-            --environment "Variables={PORT=${{ vars.APP_PORT }},DB_HOST=${{ vars.DB_HOST }},DB_USER=${{ secrets.DB_USER }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},DB_NAME=${{ vars.DB_NAME }}}"
+            --environment "Variables={PORT='${{ vars.APP_PORT }}',DB_HOST='${{ vars.DB_HOST }}',DB_USER='${{ secrets.DB_USER }}',DB_PASSWORD='${{ secrets.DB_PASSWORD }}',DB_NAME='${{ vars.DB_NAME }}'}"
+            
 
 
 
