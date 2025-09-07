@@ -6,7 +6,7 @@ on:
 
 jobs:
   image: 
-    permissions: write-all     # <- needed to push to GHCR
+    permissions: write-all     # <- needed to push to container registry
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -36,6 +36,8 @@ jobs:
           tags: |
             ${{ vars.AWS_ECR_URI }}:latest
             ${{ vars.AWS_ECR_URI }}:sha-${{ github.sha }}
+          cache-from: type=registry,ref=${{ vars.AWS_ECR_URI }}:cache # <- use cache if available
+          cache-to: type=registry,ref=${{ vars.AWS_ECR_URI }}:cache,mode=max # <- push cache
   migrate:
     runs-on: ubuntu-latest
     needs: image   # <--- wait for image job to succeed
