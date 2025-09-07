@@ -10,7 +10,7 @@ import (
 )
 
 func Connect(host string, user string, password string, name string) (*sql.DB, error) {
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=enable",
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=require",
 		host, user, password, name)
 
 	db, err := sql.Open("postgres", dsn)
