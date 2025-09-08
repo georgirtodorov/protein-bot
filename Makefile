@@ -46,5 +46,5 @@ test:
 	docker run --rm \
 		-v $(PWD):/app \
 		-w /app \
-		golang:1.22 \
+		golang:1.22-alpine \
 		bash -c "go mod tidy && go test -v ./..."
