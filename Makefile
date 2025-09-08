@@ -41,3 +41,10 @@ migrate-up:
 	docker run --rm $(if $(DOCKER_NETWORK),--network $(DOCKER_NETWORK)) \
 		-v $(PWD)/migrations:/app migrate/migrate \
 		-path=/app -database "postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=require" up
+
+test:
+	docker run --rm \
+		-v $(PWD):/app \
+		-w /app \
+		golang:1.22 \
+		bash -c "go mod tidy && go test -v ./..."
