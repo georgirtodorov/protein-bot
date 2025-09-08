@@ -45,6 +45,6 @@ migrate-up:
 test:
 	docker run --rm \
 		-v $(PWD):/app \
-		-w /app \
+		-w /app/tests \
 		golang:1.22-alpine \
-		bash -c "go mod tidy && go test -v ./..."
+		go test -v ./...
