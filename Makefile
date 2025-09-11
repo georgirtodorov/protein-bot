@@ -38,9 +38,10 @@ dev:
 
 migrate-up:
 	@echo "Current directory: $(PWD)"
+	@echo "Using DB_SSLMODE=$(DB_SSLMODE)"
 	docker run --rm $(if $(DOCKER_NETWORK),--network $(DOCKER_NETWORK)) \
 		-v $(PWD)/migrations:/app migrate/migrate \
-		-path=/app -database "postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=require" up
+		-path=/app -database "postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=${DB_SSLMODE}" up
 
 test:
 	docker run --rm \

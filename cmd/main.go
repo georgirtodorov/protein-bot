@@ -16,7 +16,9 @@ func main() {
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
 	name := os.Getenv("DB_NAME")
-	db, err := db.Connect(host, user, password, name)
+	sslMode := os.Getenv("DB_SSLMODE")
+
+	db, err := db.Connect(host, user, password, name, sslMode)
 	if err != nil {
 		log.Fatalf("Database connection failed: %v", err)
 	}
