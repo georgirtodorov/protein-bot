@@ -50,7 +50,7 @@ jobs:
           service: protein-bot
           image: ${{ vars.GC_AR_URL }}:latest
           region: europe-west1
-          allow-unauthenticated: true
+          flags: "--allow-unauthenticated"
       
   migrate:
     runs-on: ubuntu-latest

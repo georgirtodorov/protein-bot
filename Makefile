@@ -22,8 +22,8 @@ build-nc:
 dev:
 	@echo "Running locally with Go in Docker"
 	docker-compose up -d db pgadmin
-	docker run --rm -d\
-		-v $(PWD):/app \
+	docker run --rm -it\
+		-v $(PWD)/backend:/app \
 		-w /app \
 		--network $(DOCKER_NETWORK) \
 		--name protein-bot-dev \
@@ -33,6 +33,25 @@ dev:
 		-e DB_PORT=$(DB_PORT) \
 		-e DB_NAME=$(DB_NAME) \
 		-e PORT=$(APP_PORT) \
+		-e DB_SSLMODE=$(DB_SSLMODE) \
+		-p $(APP_PORT):$(APP_PORT) \
+		golang:1.25-alpine go run ./cmd/main.go
+
+dev-d:
+	@echo "Running locally with Go in Docker"
+	docker-compose up -d db pgadmin
+	docker run --rm -d\
+		-v $(PWD)/backend:/app \
+		-w /app \
+		--network $(DOCKER_NETWORK) \
+		--name protein-bot-dev \
+		-e DB_USER=$(DB_USER) \
+		-e DB_PASSWORD=$(DB_PASSWORD) \
+		-e DB_HOST=$(DB_HOST) \
+		-e DB_PORT=$(DB_PORT) \
+		-e DB_NAME=$(DB_NAME) \
+		-e PORT=$(APP_PORT) \
+		-e DB_SSLMODE=$(DB_SSLMODE) \
 		-p $(APP_PORT):$(APP_PORT) \
 		golang:1.25-alpine go run ./cmd/main.go
 
@@ -40,12 +59,12 @@ migrate-up:
 	@echo "Current directory: $(PWD)"
 	@echo "Using DB_SSLMODE=$(DB_SSLMODE)"
 	docker run --rm $(if $(DOCKER_NETWORK),--network $(DOCKER_NETWORK)) \
-		-v $(PWD)/migrations:/app migrate/migrate \
+		-v $(PWD)/backend/migrations:/app migrate/migrate \
 		-path=/app -database "postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=${DB_SSLMODE}" up
 
 test:
 	docker run --rm \
-		-v $(PWD):/app \
+		-v $(PWD)/backend:/app \
 		-w /app/tests \
 		golang:1.22-alpine \
 		go test -v ./...

@@ -4,7 +4,7 @@ services:
   protein-bot: # Define the protein-bot service (your Go app)
     build:
       context: . # Build the image from from the current directory
-      dockerfile: Dockerfile # Use the specified Dockerfile
+      dockerfile: ./backend/Dockerfile # Use the specified Dockerfile
     image: protein-bot # Name the built image
     container_name: protein-bot # Set a custom container name
     restart: unless-stopped # Restart the container unless it is explicitly stopped
