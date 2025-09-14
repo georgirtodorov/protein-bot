@@ -3,7 +3,7 @@
 FROM golang:1.25.0-alpine AS build
 
 # Set working directory to module root
-WORKDIR /app
+WORKDIR /app/backend
 
 # Copy module files and download dependencies
 COPY backend/go.mod backend/go.sum ./

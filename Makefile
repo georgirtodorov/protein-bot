@@ -23,8 +23,8 @@ dev:
 	@echo "Running locally with Go in Docker"
 	docker-compose up -d db pgadmin
 	docker run --rm -it\
-		-v $(PWD)/backend:/app \
-		-w /app \
+		-v $(PWD):/app \
+		-w /app/backend \
 		--network $(DOCKER_NETWORK) \
 		--name protein-bot-dev \
 		-e DB_USER=$(DB_USER) \
@@ -41,8 +41,8 @@ dev-d:
 	@echo "Running locally with Go in Docker"
 	docker-compose up -d db pgadmin
 	docker run --rm -d\
-		-v $(PWD)/backend:/app \
-		-w /app \
+		-v $(PWD):/app \
+		-w /app/backend \
 		--network $(DOCKER_NETWORK) \
 		--name protein-bot-dev \
 		-e DB_USER=$(DB_USER) \
@@ -64,7 +64,7 @@ migrate-up:
 
 test:
 	docker run --rm \
-		-v $(PWD)/backend:/app \
-		-w /app/tests \
+		-v $(PWD)/backend:/app/backend \
+		-w /app/backend \
 		golang:1.22-alpine \
 		go test -v ./...
