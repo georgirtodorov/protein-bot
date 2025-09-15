@@ -21,7 +21,7 @@ build-nc:
 
 dev:
 	@echo "Running locally with Go in Docker"
-	docker-compose up -d db pgadmin
+	docker-compose up -d db pgadmin frontend
 	docker run --rm -it\
 		-v $(PWD):/app \
 		-w /app/backend \

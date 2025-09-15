@@ -1,6 +1,20 @@
 version: '3.8' # Specify the Docker Compose file format version
 
 services:
+  frontend: # Define the React frontend service
+    build:
+      context: . # Build the image from the frontend directory
+      dockerfile: ./frontend/Dockerfile # Use the Dockerfile in the frontend directory
+    image: react-app # Name the built image
+    container_name: react-app # Set a custom container name
+    restart: unless-stopped # Restart the container unless it is explicitly stopped
+    environment:
+      - REACT_APP_API_URL=${REACT_APP_API_URL} # Pass the API URL
+    volumes:
+      - ${FRONTEND_DATA}:/app # Mount the frontend source code for live updates
+      - /app/node_modules # Ensure node_modules is not overwritten
+    ports:
+      - "${FRONTEND_PORT}:5173" # Map host port 5173 to container port 5173
   protein-bot: # Define the protein-bot service (your Go app)
     build:
       context: . # Build the image from from the current directory
