@@ -1,6 +1,4 @@
-// Package handlers contains the HTTP handlers for Protein Bot.
-
-package handlers
+package v1
 
 import (
 	"database/sql"
