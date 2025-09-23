@@ -4,9 +4,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/georgirtodorov/protein-bot/internal/db"
-	"github.com/georgirtodorov/protein-bot/internal/routes"
-	"github.com/georgirtodorov/protein-bot/internal/server"
+	"github.com/georgirtodorov/protein-bot/backend/internal/db"
+	"github.com/georgirtodorov/protein-bot/backend/internal/routes"
+	"github.com/georgirtodorov/protein-bot/backend/internal/server"
 )
 
 func main() {
@@ -24,10 +24,10 @@ func main() {
 	}
 	defer db.Close() // close DB when main exits
 
-	// Register all routes with DB
-	routes.Register(db)
+	// Get the router (with routes + CORS middleware applied + DB passed)
+	handler := routes.Register(db)
 
 	// Start the server
 	port := os.Getenv("PORT")
-	server.Serve(port)
+	server.Serve(port, handler)
 }

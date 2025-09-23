@@ -1,37 +1,22 @@
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState } from "react";
+import { ProteinService } from "../services/protein";
 
 export default function AddProtein() {
-  // ✅ Explicitly type state as string
-  const [amount, setAmount] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  const [amount, setAmount] = useState("");
+  const [description, setDescription] = useState("");
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    try {
-      const res = await fetch("/v1/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount: Number(amount),
-          description,
-        }),
-      });
-
-      if (!res.ok) throw new Error("Failed to add protein");
-
-      alert("Protein added!");
-      setAmount("");
-      setDescription("");
-    } catch (err) {
-      if (err instanceof Error) {
-        alert(err.message);
-      } else {
-        console.error(err);
-        alert("An unexpected error occurred.");
-      }
-    }
+async function handleSubmit(e: React.FormEvent) {
+  e.preventDefault();
+  try {
+    const data = await ProteinService.add({ amount: Number(amount), description });
+    // Assuming apiRequest parses JSON and returns it
+    alert(`Protein added: ${data.added}\nTotal: ${data.total}\nRemaining: ${data.remaining}`);
+    setAmount("");
+    setDescription("");
+  } catch (err) {
+    alert((err as Error).message);
   }
+}
 
   return (
     <div className="max-w-md mx-auto bg-white p-6 rounded-2xl shadow-md">
@@ -41,9 +26,7 @@ export default function AddProtein() {
           type="number"
           placeholder="Amount (g)"
           value={amount}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setAmount(e.target.value)
-          }
+          onChange={(e) => setAmount(e.target.value)}
           className="w-full border p-2 rounded-lg"
           required
         />
@@ -51,9 +34,7 @@ export default function AddProtein() {
           type="text"
           placeholder="Description (optional)"
           value={description}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setDescription(e.target.value)
-          }
+          onChange={(e) => setDescription(e.target.value)}
           className="w-full border p-2 rounded-lg"
         />
         <button

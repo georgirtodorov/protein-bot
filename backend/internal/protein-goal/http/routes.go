@@ -4,11 +4,12 @@ package proteingoal
 import (
 	"database/sql"
 
-	v1 "github.com/georgirtodorov/protein-bot/internal/protein-goal/http/v1"
+	v1 "github.com/georgirtodorov/protein-bot/internal/protein/http/v1"
+	"github.com/gorilla/mux"
 )
 
 // Register wires URLs to handlers. Action-oriented routing design.
-func Register(db *sql.DB) {
+func Register(r *mux.Router, db *sql.DB) {
 
-	v1.Register(db)
+	v1.Register(r, db)
 }

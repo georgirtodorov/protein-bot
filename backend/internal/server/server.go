@@ -6,14 +6,14 @@ import (
 	"net/http"
 )
 
-func Serve(port string) {
+func Serve(port string, handler http.Handler) {
 	if port == "" {
 		log.Fatalf("server failed to start, PORT environment variable not set")
 	}
 	addr := ":" + port
 	log.Printf("Starting running on %s\n", addr)
 
-	if err := http.ListenAndServe(addr, nil); err != nil {
+	if err := http.ListenAndServe(addr, handler); err != nil {
 		log.Fatalf("server failed: %v", err)
 	}
 }

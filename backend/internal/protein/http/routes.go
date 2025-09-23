@@ -5,10 +5,10 @@ import (
 	"database/sql"
 
 	v1 "github.com/georgirtodorov/protein-bot/internal/protein/http/v1"
+
+	"github.com/gorilla/mux"
 )
 
-// Register wires URLs to handlers. Action-oriented routing design.
-func Register(db *sql.DB) {
-
-	v1.Register(db)
+func Register(r *mux.Router, db *sql.DB) {
+	v1.Register(r, db) // now matches the signature
 }

@@ -34,6 +34,7 @@ dev:
 		-e DB_NAME=$(DB_NAME) \
 		-e PORT=$(APP_PORT) \
 		-e DB_SSLMODE=$(DB_SSLMODE) \
+		-e REACT_APP_API_URL=$(REACT_APP_API_URL) \
 		-p $(APP_PORT):$(APP_PORT) \
 		golang:1.25-alpine go run ./cmd/main.go
 
@@ -52,6 +53,7 @@ dev-d:
 		-e DB_NAME=$(DB_NAME) \
 		-e PORT=$(APP_PORT) \
 		-e DB_SSLMODE=$(DB_SSLMODE) \
+		-e REACT_APP_API_URL=$(REACT_APP_API_URL) \
 		-p $(APP_PORT):$(APP_PORT) \
 		golang:1.25-alpine go run ./cmd/main.go
 

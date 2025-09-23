@@ -9,7 +9,7 @@ services:
     container_name: react-app # Set a custom container name
     restart: unless-stopped # Restart the container unless it is explicitly stopped
     environment:
-      - REACT_APP_API_URL=${REACT_APP_API_URL} # Pass the API URL
+      - VITE_APP_API_URL=${VITE_APP_API_URL} # Pass the API URL
     volumes:
       - ${FRONTEND_DATA}:/app # Mount the frontend source code for live updates
       - /app/node_modules # Ensure node_modules is not overwritten
@@ -31,6 +31,7 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - DB_SSLMODE=${DB_SSLMODE}
+      - REACT_APP_API_URL=${REACT_APP_API_URL}
     ports:
       - "${APP_PORT}:${APP_PORT}" # Map host port 8080 to container port 8080
   db: # Define the database service

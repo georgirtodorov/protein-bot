@@ -4,17 +4,19 @@ package v1
 import (
 	"database/sql"
 	"net/http"
+
+	goal "github.com/georgirtodorov/protein-bot/internal/protein-goal/http/v1/handlers"
+
+	"github.com/gorilla/mux"
 )
 
 // Register wires URLs to handlers. Action-oriented routing design.
-func Register(db *sql.DB) {
+func Register(r *mux.Router, db *sql.DB) {
 
-	http.HandleFunc("/v1/get-goal", func(w http.ResponseWriter, r *http.Request) {
-		GetGoal(w, r, db)
-	})
-
-	http.HandleFunc("/v1/set-goal", func(w http.ResponseWriter, r *http.Request) {
-		SetGoal(w, r, db)
-	})
-
+	r.HandleFunc("/proteingoal/set", func(w http.ResponseWriter, r *http.Request) {
+		goal.SetGoal(w, r, db)
+	}).Methods("POST")
+	r.HandleFunc("/proteingoal/get", func(w http.ResponseWriter, r *http.Request) {
+		goal.GetGoal(w, r, db)
+	}).Methods("GET")
 }
