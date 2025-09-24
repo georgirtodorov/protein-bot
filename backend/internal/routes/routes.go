@@ -27,8 +27,8 @@ func Register(db *sql.DB) http.Handler {
 		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 	)
 
-	proteingoal.Register(r, db)
-	protein.Register(r, db) // protein v1 routes
+	proteingoal.Register(r, db) // proteingoal v1 routes
+	protein.Register(r, db)     // protein v1 routes
 
 	// Optional welcome route
 	r.HandleFunc("/", go_handlers.Welcome)

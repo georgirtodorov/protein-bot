@@ -1,10 +1,12 @@
+import { ProteinGoalType } from "../types/ProteinGoalType";
 import { apiRequest } from "./api";
 
 export const GoalService = {
-  getGoal: () => apiRequest<{ goal: number }>("/v1/goal"),
-  setGoal: (goal: number) =>
-    apiRequest<{ success: boolean }>("/v1/goal", {
+  getGoal: () => apiRequest<ProteinGoalType>("/v1/protein/goal"),
+  setGoal: (amount: number) =>
+    apiRequest<{ success: boolean }>("/v1/protein/goal", {
       method: "POST",
-      body: JSON.stringify({ goal }),
+      body: JSON.stringify({ amount }),
     }),
+  getHistory: () => apiRequest<ProteinGoalType[]>("/v1/protein/goal/history")
 };

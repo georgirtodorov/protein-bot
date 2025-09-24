@@ -13,10 +13,18 @@ import (
 // Register wires URLs to handlers. Action-oriented routing design.
 func Register(r *mux.Router, db *sql.DB) {
 
-	r.HandleFunc("/proteingoal/set", func(w http.ResponseWriter, r *http.Request) {
-		goal.SetGoal(w, r, db)
-	}).Methods("POST")
-	r.HandleFunc("/proteingoal/get", func(w http.ResponseWriter, r *http.Request) {
-		goal.GetGoal(w, r, db)
+	r.HandleFunc("/v1/protein/goal", func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case http.MethodGet:
+			goal.GetGoal(w, r, db)
+		case http.MethodPost:
+			goal.SetGoal(w, r, db)
+		default:
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		}
+	})
+
+	r.HandleFunc("/v1/protein/goal/history", func(w http.ResponseWriter, r *http.Request) {
+		goal.GoalHistory(w, r, db)
 	}).Methods("GET")
 }

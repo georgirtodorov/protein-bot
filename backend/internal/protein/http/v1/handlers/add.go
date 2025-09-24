@@ -61,7 +61,7 @@ func Add(w http.ResponseWriter, r *http.Request, d *sql.DB) {
 	}
 
 	msg := fmt.Sprintf("Protein added: %d gr\nTotal: %d\nGoal: %d\nRemaining: %d",
-		amount, total, goal, goal-total)
+		amount, total, goal.Amount, goal.Amount-total)
 	fmt.Println("Sending response:", msg)
 
 	w.Header().Set("Content-Type", "application/json")
@@ -69,7 +69,7 @@ func Add(w http.ResponseWriter, r *http.Request, d *sql.DB) {
 	json.NewEncoder(w).Encode(AddResponse{
 		Added:     amount,
 		Total:     total,
-		Goal:      goal,
-		Remaining: goal - total,
+		Goal:      goal.Amount,
+		Remaining: goal.Amount - total,
 	})
 }

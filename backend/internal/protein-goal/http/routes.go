@@ -4,7 +4,8 @@ package proteingoal
 import (
 	"database/sql"
 
-	v1 "github.com/georgirtodorov/protein-bot/internal/protein/http/v1"
+	v1 "github.com/georgirtodorov/protein-bot/internal/protein-goal/http/v1"
+
 	"github.com/gorilla/mux"
 )
 

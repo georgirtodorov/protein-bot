@@ -29,8 +29,8 @@ func Status(w http.ResponseWriter, r *http.Request, d *sql.DB) {
 
 	response := StatusResponse{
 		Total:     total,
-		Goal:      goal,
-		Remaining: goal - total,
+		Goal:      goal.Amount,
+		Remaining: goal.Amount - total,
 	}
 
 	w.Header().Set("Content-Type", "application/json")

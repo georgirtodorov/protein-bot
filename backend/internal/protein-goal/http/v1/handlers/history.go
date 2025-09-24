@@ -1,4 +1,3 @@
-// Package goal get and set
 package goal
 
 import (
@@ -9,25 +8,21 @@ import (
 	"github.com/georgirtodorov/protein-bot/internal/db"
 )
 
-type GetGoalResponse struct {
-	Goal int `json:"goal"`
-}
-
-func GetGoal(w http.ResponseWriter, r *http.Request, d *sql.DB) {
+func GoalHistory(w http.ResponseWriter, r *http.Request, d *sql.DB) {
 	// use db to fetch or update protein goal
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
-	goal, err := db.GetProteinGoal(d)
+	result, err := db.GetProteinGoalHistory(d)
 	if err != nil {
-		http.Error(w, "Failed to fetch protein goal", http.StatusInternalServerError)
+		http.Error(w, "Failed to fetch protein goal history", http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(goal); err != nil {
+	if err := json.NewEncoder(w).Encode(result); err != nil {
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 		return
 	}

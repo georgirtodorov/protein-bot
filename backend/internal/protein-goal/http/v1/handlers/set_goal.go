@@ -2,9 +2,9 @@ package goal
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/georgirtodorov/protein-bot/internal/db"
 )
@@ -15,19 +15,25 @@ func SetGoal(w http.ResponseWriter, r *http.Request, d *sql.DB) {
 		return
 	}
 
-	amountStr := r.FormValue("amount")
-	amount, err := strconv.Atoi(amountStr)
-	if err != nil {
-		http.Error(w, "Invalid amount, number expected", http.StatusBadRequest)
+	// Parse JSON body
+	var payload struct {
+		Amount int `json:"amount"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+		http.Error(w, "Invalid JSON body", http.StatusBadRequest)
 		return
 	}
 
-	// Call the db layer to insert the protein record
-	if err := db.SetProteinGoal(d, amount); err != nil {
-		http.Error(w, "Failed to add entry", http.StatusInternalServerError)
+	// Set the goal in DB
+	if err := db.SetProteinGoal(d, payload.Amount); err != nil {
+		http.Error(w, "Failed to set goal", http.StatusInternalServerError)
 		return
 	}
 
-	msg := fmt.Sprintf("Protein goal set: %d grams daily", amount)
-	w.Write([]byte(msg))
+	fmt.Println("Protein goal set:", payload.Amount, "grams daily")
+
+	// Respond
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }

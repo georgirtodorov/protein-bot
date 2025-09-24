@@ -1,5 +1,4 @@
-import { Status } from "../pages/ProteinStatus";
-import { ProteinStatus } from "../types/ProteinStatusType";
+import { ProteinStatusType } from "../types/ProteinStatusType";
 import { apiRequest } from "./api";
 
 export interface ProteinEntry {
@@ -18,12 +17,12 @@ export interface AddProteinResponse {
 
 export const ProteinService = {
   add: (entry: Omit<ProteinEntry, "id" | "created_at">) =>
-    apiRequest<AddProteinResponse>("/v1/add", {
+    apiRequest<AddProteinResponse>("/v1/protein/add", {
       method: "POST",
       body: JSON.stringify(entry),
     }),
 
-  history: () => apiRequest<ProteinEntry[]>("/v1/history"),
+  history: () => apiRequest<ProteinEntry[]>("/v1/protein/history"),
 
-  status: () => apiRequest<ProteinStatus>("/v1/status"),
+  status: () => apiRequest<ProteinStatusType>("/v1/protein/status"),
 };
