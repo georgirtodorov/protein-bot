@@ -1,3 +1,5 @@
+import { Status } from "../pages/ProteinStatus";
+import { ProteinStatus } from "../types/ProteinStatusType";
 import { apiRequest } from "./api";
 
 export interface ProteinEntry {
@@ -23,5 +25,5 @@ export const ProteinService = {
 
   history: () => apiRequest<ProteinEntry[]>("/v1/history"),
 
-  status: () => apiRequest<{ total: number; goal: number }>("/v1/status"),
+  status: () => apiRequest<ProteinStatus>("/v1/status"),
 };
